@@ -16,8 +16,8 @@ appVersion: "1.1"
 
 
 home: https://github.com/chaimeleon-eu/helm-chart-jupyter-tensorflow
-# icon: https://chaimeleon.eu/wp-content/uploads/2020/10/logo-chaimeleon.svg
-icon: https://pbs.twimg.com/profile_images/1329395797121769472/AXv64BOJ_400x400.jpg
+# icon: https://pbs.twimg.com/profile_images/1329395797121769472/AXv64BOJ_400x400.jpg
+icon: https://raw.githubusercontent.com/chaimeleon-eu/helm-chart-jupyter-tensorflow/master/resources/logo.png
 
 
 
