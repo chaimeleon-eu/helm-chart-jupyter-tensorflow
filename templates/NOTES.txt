@@ -1,0 +1,13 @@
+
+The application will be accesible in the following URL: 
+  https://{{ include "jupyter-tensorflow.url-host" . }}/{{ include "jupyter-tensorflow.url-path" . }}/?token={{/* include "jupyter-tensorflow.access-token" . */}}
+
+Once in the file explorer, there will be three important directories:
+  - {{ include "chaimeleon.datasets.mount_point" . }}
+    [All the datasets you selected to work with]
+    
+  - {{ include "chaimeleon.persistent_home.mount_point" . }}
+    [Private persistent storage: for your algoritms, results and whatever you need for the work]
+    
+  - {{ include "chaimeleon.persistent_shared_folder.mount_point" . }}
+    [Public storage where you can share files with the other CHAIMELEON users]

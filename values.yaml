@@ -1,0 +1,15 @@
+# Default values for the chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+requests: 
+  gpu: false
+  cpu: "1"
+  memory: "2Gi"
+
+datasets_list: ""
+
+configmaps:
+  ceph: "ceph-info"
+  chaimeleon: "chaimeleon"
+

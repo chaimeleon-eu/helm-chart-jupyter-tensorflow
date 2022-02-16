@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "jupyter-tensorflow.fullname" . }}"
+  annotations: 
+    {{- include "chaimeleon.annotations" . | nindent 4 }}  
+  labels:
+    {{- include "jupyter-tensorflow.labels" . | nindent 4 }}    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ include "jupyter-tensorflow.fullname" . }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ include "jupyter-tensorflow.fullname" . }}"
+    spec:
+      volumes:
+        - name: datalake
+          {{- include "chaimeleon.datalake.volume" . | nindent 10 }}
+        - name: home
+          {{- include "chaimeleon.persistent_home.volume" . | nindent 10 }}
+        - name: shared-folder
+          {{- include "chaimeleon.persistent_shared_folder.volume" . | nindent 10 }}
+        
+        {{- if .Values.datasets_list }}
+        {{- range $datasetID := splitList "," .Values.datasets_list }}
+        - name: "{{ $datasetID -}}"
+          {{- include "chaimeleon.dataset.volume" (list $ $datasetID) | nindent 10 }}
+        {{- end }}
+        {{- end }}
+
+      securityContext:
+        runAsUser: {{ include "chaimeleon.user.uid" . }}
+        runAsGroup: {{ include "chaimeleon.group.gid" . }}
+        fsGroup: {{ include "chaimeleon.user.uid" . }}
+        supplementalGroups: [ {{ include "chaimeleon.ceph.gid" . }} ] 
+
+      priorityClassName: processing-applications
+      
+      containers:
+      - name: {{ .Chart.Name }}
+        imagePullPolicy: IfNotPresent
+        {{- if .Values.requests.gpu }}
+        image: "chaimeleon-eu.i3m.upv.es:10443/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
+        {{- else }}
+        image: "chaimeleon-eu.i3m.upv.es:10443/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
+        {{- end }}
+        resources:
+          requests:
+            memory: "{{ .Values.requests.memory }}"
+            cpu: "{{ .Values.requests.cpu }}"
+        {{- if .Values.requests.gpu }}
+            nvidia.com/gpu: 1
+          limits:
+            nvidia.com/gpu: 1
+        {{- end }}
+        
+        volumeMounts:
+          - mountPath: "{{- include "chaimeleon.datalake.mount_point" . -}}"
+            name: datalake
+          - mountPath: "{{- include "chaimeleon.persistent_home.mount_point" . -}}"
+            name: home
+          - mountPath: "{{- include "chaimeleon.persistent_shared_folder.mount_point" . -}}"
+            name: shared-folder
+            
+          {{- if .Values.datasets_list }}
+          {{- range $datasetID := splitList "," .Values.datasets_list }}
+          - mountPath: "{{- include "chaimeleon.datasets.mount_point" $ -}}/{{- $datasetID -}}"
+            name: "{{ $datasetID -}}"
+          {{- end }}
+          {{- end }}
+
+        ports:
+          - containerPort: 8888
+            name: jupyter
+        env:
+          # password for "chaimeleon" (OS) user, also for jupyter access token
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ include "jupyter-tensorflow.fullname" . }}"
+                key: container-password
+          - name: URL_PATH
+            value: "{{ include "jupyter-tensorflow.url-path" . }}"
+

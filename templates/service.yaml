@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "{{ include "jupyter-tensorflow.fullname" . }}"
+spec:
+    selector:
+        app: "{{ include "jupyter-tensorflow.fullname" . }}"
+    type: ClusterIP
+    ports:
+    - name: jupyter-service
+      port: 8888
+      targetPort: jupyter
+      
