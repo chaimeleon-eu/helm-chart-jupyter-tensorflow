@@ -2,7 +2,8 @@ apiVersion: v2
 
 
 name: jupyter-tensorflow
-description: Deploy just a pod with TensorFlow official image with the option to include CUDA and request GPU, and with Jupyter notebooks web service.
+# Short description (can be extended in the README.md)
+description: CHAIMELEON workstation with TensorFlow and Jupyter Notebook web interface
 type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
@@ -23,7 +24,10 @@ icon: https://raw.githubusercontent.com/chaimeleon-eu/helm-chart-jupyter-tensorf
 
 sources:
   - https://github.com/chaimeleon-eu/workstation-images
-  - https://chaimeleon.eu/
+# - https://chaimeleon.eu/
+  - https://www.tensorflow.org/learn
+#  - https://docs.jupyter.org/
+  - https://jupyter-notebook.readthedocs.io/en/latest/ui_components.html
 
 maintainers:  
   - name: Sergio Lopez Huguet
