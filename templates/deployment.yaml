@@ -43,9 +43,9 @@ spec:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
         {{- if .Values.requests.gpu }}
-        image: "chaimeleon-eu.i3m.upv.es:10443/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
+        image: "harbor.chaimeleon-eu.i3m.upv.es/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
         {{- else }}
-        image: "chaimeleon-eu.i3m.upv.es:10443/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
+        image: "harbor.chaimeleon-eu.i3m.upv.es/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
         {{- end }}
         resources:
           requests:
