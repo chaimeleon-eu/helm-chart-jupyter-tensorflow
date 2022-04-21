@@ -1,6 +1,6 @@
 
 The application will be accesible in the following URL: 
-  https://{{ include "jupyter-tensorflow.url-host" . }}/{{ include "jupyter-tensorflow.url-path" . }}/?token={{/* include "jupyter-tensorflow.access-token" . */}}
+  https://{{ include "chaimeleon.host" . }}/{{ include "jupyter-tensorflow.url-path" . }}/?token={{/* include "jupyter-tensorflow.access-token" . */}}
 
 You can copy the access password from the secret named "container-password" (above in the right side).
 

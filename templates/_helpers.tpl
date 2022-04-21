@@ -80,13 +80,8 @@ Create the name of the service account to use
 {{- end }}
 */}}
 
-{{- define "jupyter-tensorflow.url-host" -}}
-chaimeleon-eu.i3m.upv.es
-{{- end -}}
-
 {{- define "jupyter-tensorflow.url-path" -}}
-{{- /* printf "workspace/%s/%s" .Release.Namespace (include "jupyter-tensorflow.fullname" .) */ -}}
-{{- printf "%s/%s" .Release.Namespace (include "jupyter-tensorflow.fullname" .) -}}
+{{ include "chaimeleon.user-path" . }}{{ include "jupyter-tensorflow.fullname" . }}
 {{- end -}}
 
 {{- define "jupyter-tensorflow.access-token" }}

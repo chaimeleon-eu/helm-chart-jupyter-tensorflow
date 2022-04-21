@@ -3,9 +3,9 @@ kind: Deployment
 metadata:
   name: "{{ include "jupyter-tensorflow.fullname" . }}"
   annotations: 
-    {{- include "chaimeleon.annotations" . | nindent 4 }}  
+    {{- include "chaimeleon.annotations" . | nindent 4 }}
   labels:
-    {{- include "jupyter-tensorflow.labels" . | nindent 4 }}    
+    {{- include "jupyter-tensorflow.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
@@ -35,7 +35,7 @@ spec:
         runAsUser: {{ include "chaimeleon.user.uid" . }}
         runAsGroup: {{ include "chaimeleon.group.gid" . }}
         fsGroup: {{ include "chaimeleon.user.uid" . }}
-        supplementalGroups: [ {{ include "chaimeleon.ceph.gid" . }} ] 
+        supplementalGroups: [ {{ include "chaimeleon.ceph.gid" . }} ]
 
       priorityClassName: processing-applications
       
@@ -43,9 +43,9 @@ spec:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
         {{- if .Values.requests.gpu }}
-        image: "harbor.chaimeleon-eu.i3m.upv.es/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
         {{- else }}
-        image: "harbor.chaimeleon-eu.i3m.upv.es/chaimeleon-library/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
         {{- end }}
         resources:
           requests:
