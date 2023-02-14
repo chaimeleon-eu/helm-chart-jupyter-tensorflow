@@ -80,14 +80,13 @@ Create the name of the service account to use
 {{- end }}
 */}}
 
-{{- define "jupyter-tensorflow.url-path" -}}
-{{ include "chaimeleon.user-path" . }}{{ include "jupyter-tensorflow.fullname" . }}
-{{- end -}}
 
-{{- define "jupyter-tensorflow.access-token" }}
-{{- $secret := (lookup "v1" "Secret" .Release.Namespace (include "jupyter-tensorflow.fullname" . )) }}
-{{- index $secret "data" "container-password" -}}
-{{- end -}}
+{{/*
+Print the name for the Guacamole connection.
+*/}}
+{{- define "jupyter-tensorflow.connectionName" -}}
+{{- now | date "2006-01-02-15-04-05" }}--{{ include "jupyter-tensorflow.fullname" . -}}
+{{- end }}
 
 {{/* Print a random string (useful for generate passwords). */}}
 {{- define "utils.randomString" -}}

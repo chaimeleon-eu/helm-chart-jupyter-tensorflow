@@ -7,7 +7,9 @@ spec:
         app: "{{ include "jupyter-tensorflow.fullname" . }}"
     type: ClusterIP
     ports:
-    - name: jupyter-service
-      port: 8888
-      targetPort: jupyter
-      
+    - name: sshd-svc
+      port: 2222
+      targetPort: sshd
+    - name: vnc-gui-svc
+      port: 5900
+      targetPort: vnc-gui

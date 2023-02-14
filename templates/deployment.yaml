@@ -43,9 +43,9 @@ spec:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
         {{- if .Values.requests.gpu }}
-        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}cuda10"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_desktop_jupyter:{{ .Chart.AppVersion }}cuda11"
         {{- else }}
-        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_jupyter:{{ .Chart.AppVersion }}"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_desktop_jupyter:{{ .Chart.AppVersion }}"
         {{- end }}
         resources:
           requests:
@@ -73,15 +73,45 @@ spec:
           {{- end }}
 
         ports:
-          - containerPort: 8888
-            name: jupyter
+          - containerPort: 2222
+            name: sshd
+          - containerPort: 5900
+            name: vnc-gui
         env:
-          # password for "chaimeleon" (OS) user, also for jupyter access token
+          # password for "chaimeleon" (OS and SSH) user
           - name: PASSWORD
             valueFrom:
               secretKeyRef:
                 name: "{{ include "jupyter-tensorflow.fullname" . }}"
                 key: container-password
-          - name: URL_PATH
-            value: "{{ include "jupyter-tensorflow.url-path" . }}"
+
+          # password for VNC access (empty username)
+          - name: VNC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{ include "jupyter-tensorflow.fullname" . }}"
+                key: container-password
+                
+          - name: VNC_HOST
+            # this is the DNS name of the service
+            value: "{{ include "jupyter-tensorflow.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
+
+          # Parameters required for automatically create the connection in Guacamole for this container
+          - name: GUACAMOLE_URL
+            value: "{{ include "chaimeleon.guacamole-url" . }}"
+          - name: GUACD_HOST
+            value: "{{ include "chaimeleon.guacd-host" . }}"
+          - name: GUACAMOLE_USER
+            {{- include "chaimeleon.guacamole-user-value" . | nindent 12 }}
+          - name: GUACAMOLE_PASSWORD
+            {{- include "chaimeleon.guacamole-password-value" . | nindent 12 }}
+          - name: GUACAMOLE_CONNECTION_NAME
+            value: "{{- include "jupyter-tensorflow.connectionName" . -}}"
+
+          - name: SSH_ENABLE_PASSWORD_AUTH
+            value: "true"
+          - name: GATEWAY_PORTS
+            value: "true"
+          - name: TCP_FORWARDING
+            value: "true"
 

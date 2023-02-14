@@ -1,15 +1,24 @@
 
-The application will be accesible in the following URL: 
-  https://{{ include "chaimeleon.host" . }}/{{ include "jupyter-tensorflow.url-path" . }}/?token={{/* include "jupyter-tensorflow.access-token" . */}}
+When the application is ready it will be accesible via Guacamole in the following URL: 
+  {{ include "chaimeleon.guacamole-url" . }}
 
-You can copy the access password from the secret named "container-password" (above in the right side of this page).
+There should be a connection created for that desktop with the following name: 
+  {{ include "jupyter-tensorflow.connectionName" . }}
+It can take few seconds to appear (refresh the page if you do not see it).
+  
+Once in the remote desktop, a browser should be automatically opened with Jupyter Notebooks.
+If you close it, there is a shortcut in the desktop to open it again.
 
-Once in the file explorer, there will be three important directories:
-  - {{ include "chaimeleon.datasets.mount_point" . }}
-    [All the datasets you selected to work with]
-    
-  - {{ include "chaimeleon.persistent_home.mount_point" . }}
-    [Private persistent storage: for your algoritms, results and whatever you need for the work]
-    
-  - {{ include "chaimeleon.persistent_shared_folder.mount_point" . }}
-    [Public storage where you can share files with the other CHAIMELEON users]
+And remember...
+
+    To show/hide the Guacamole menu: CTRL+SHIFT+ALT
+
+    In the file explorer of Jupyter or Ubuntu desktop, there will be three important directories:
+     - {{ include "chaimeleon.datasets.mount_point" . }}
+       [All the datasets you selected to work with]
+
+     - {{ include "chaimeleon.persistent_home.mount_point" . }}
+       [Private persistent storage: for your algoritms, results and whatever you need for the work]
+
+     - {{ include "chaimeleon.persistent_shared_folder.mount_point" . }}
+        [Public storage where you can share files with the other CHAIMELEON users]
