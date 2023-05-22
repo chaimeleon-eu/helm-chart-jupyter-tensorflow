@@ -10,6 +10,5 @@ requests:
 datasets_list: ""
 
 configmaps:
-  ceph: "ceph-info"
   chaimeleon: "chaimeleon"
 
