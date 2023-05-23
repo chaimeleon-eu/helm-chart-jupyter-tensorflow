@@ -98,9 +98,9 @@ spec:
           #- name: GUACD_HOST
           #  value: "{{ include "chaimeleon.guacd-host" . }}"
           #- name: GUACAMOLE_USER
-          #  {{- include "chaimeleon.guacamole-user-value" . | nindent 12 }}
+          #  {{/* - include "chaimeleon.guacamole-user-value" . | nindent 12 */}}
           #- name: GUACAMOLE_PASSWORD
-          #  {{- include "chaimeleon.guacamole-password-value" . | nindent 12 }}
+          #  {{/* - include "chaimeleon.guacamole-password-value" . | nindent 12 */}}
           #- name: GUACAMOLE_CONNECTION_NAME
           #  value: "{{- include "jupyter-tensorflow.connectionName" . -}}"
           #- name: VNC_HOST
