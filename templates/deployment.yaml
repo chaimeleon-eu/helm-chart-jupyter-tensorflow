@@ -92,6 +92,9 @@ spec:
                 name: "{{ include "jupyter-tensorflow.fullname" . }}"
                 key: container-password
 
+          - name: DATASETS_LIST
+            value: "{{ .Values.datasets_list }}"
+
           ## Parameters required for automatically create the connection in Guacamole for this container
           #- name: GUACAMOLE_URL
           #  value: "{{ include "chaimeleon.guacamole-url" . }}"
