@@ -1,9 +1,9 @@
 
 When the application is ready it will be accessible via Guacamole in the following URL: 
-  {{ include "chaimeleon.guacamole-url" . }}
+  <a href="{{ include "chaimeleon.guacamole-url" . }}" target="_blank">{{ include "chaimeleon.guacamole-url" . }}</a>
 
 There should be a connection created for this desktop with the following name: 
- + {{ include "jupyter-tensorflow.connectionName" . }}
+ + **{{ include "jupyter-tensorflow.connectionName" . }}**
 It can take few seconds to appear (refresh the page if you do not see it).
 
 **IMPORTANT:** This desktop may be removed automatically if you don't connect to it for more than 7 days.
