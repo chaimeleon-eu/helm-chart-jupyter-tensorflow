@@ -1,6 +1,6 @@
 
 When the application is ready it will be accessible via Guacamole in the following URL: 
-  <a href="{{ include "chaimeleon.guacamole-url" . }}" target="_blank">{{ include "chaimeleon.guacamole-url" . }}</a>
+  {{ include "chaimeleon.guacamole-url" . }}
 
 There should be a connection created for this desktop with the following name: 
  + **{{ include "jupyter-tensorflow.connectionName" . }}**

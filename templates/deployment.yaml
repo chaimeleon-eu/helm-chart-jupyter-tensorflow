@@ -16,29 +16,7 @@ spec:
       labels:
         app: "{{ include "jupyter-tensorflow.fullname" . }}"
     spec:
-      volumes:
-        - name: datalake
-          {{- include "chaimeleon.datalake.volume" . | nindent 10 }}
-        - name: home
-          {{- include "chaimeleon.persistent_home.volume" . | nindent 10 }}
-        - name: shared-folder
-          {{- include "chaimeleon.persistent_shared_folder.volume" . | nindent 10 }}
-        
-        {{- if .Values.datasets_list }}
-        {{- range $datasetID := splitList "," .Values.datasets_list }}
-        - name: "{{ $datasetID -}}"
-          {{- include "chaimeleon.dataset.volume" (list $ $datasetID) | nindent 10 }}
-        {{- end }}
-        {{- end }}
-
-      securityContext:
-        runAsUser: {{ include "chaimeleon.user.uid" . }}
-        runAsGroup: {{ include "chaimeleon.group.gid" . }}
-        fsGroup: {{ include "chaimeleon.user.uid" . }}
-        supplementalGroups: [ {{ include "chaimeleon.ceph.gid" . }} ]
-
       priorityClassName: processing-applications
-      
       containers:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
@@ -57,21 +35,6 @@ spec:
             nvidia.com/gpu: 1
         {{- end }}
         
-        volumeMounts:
-          - mountPath: "{{- include "chaimeleon.datalake.mount_point" . -}}"
-            name: datalake
-          - mountPath: "{{- include "chaimeleon.persistent_home.mount_point" . -}}"
-            name: home
-          - mountPath: "{{- include "chaimeleon.persistent_shared_folder.mount_point" . -}}"
-            name: shared-folder
-            
-          {{- if .Values.datasets_list }}
-          {{- range $datasetID := splitList "," .Values.datasets_list }}
-          - mountPath: "{{- include "chaimeleon.datasets.mount_point" $ -}}/{{- $datasetID -}}"
-            name: "{{ $datasetID -}}"
-          {{- end }}
-          {{- end }}
-
         ports:
           - containerPort: 2222
             name: sshd
@@ -94,21 +57,6 @@ spec:
 
           - name: DATASETS_LIST
             value: "{{ .Values.datasets_list }}"
-
-          ## Parameters required for automatically create the connection in Guacamole for this container
-          #- name: GUACAMOLE_URL
-          #  value: "{{ include "chaimeleon.guacamole-url" . }}"
-          #- name: GUACD_HOST
-          #  value: "{{ include "chaimeleon.guacd-host" . }}"
-          #- name: GUACAMOLE_USER
-          #  {{/* - include "chaimeleon.guacamole-user-value" . | nindent 12 */}}
-          #- name: GUACAMOLE_PASSWORD
-          #  {{/* - include "chaimeleon.guacamole-password-value" . | nindent 12 */}}
-          #- name: GUACAMOLE_CONNECTION_NAME
-          #  value: "{{- include "jupyter-tensorflow.connectionName" . -}}"
-          #- name: VNC_HOST
-          #  # this is the DNS name of the service
-          #  value: "{{ include "jupyter-tensorflow.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
 
           - name: SSH_ENABLE_PASSWORD_AUTH
             value: "true"
