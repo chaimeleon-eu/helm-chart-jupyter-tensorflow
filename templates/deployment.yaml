@@ -21,9 +21,9 @@ spec:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
         {{- if .Values.requests.gpu }}
-        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_desktop_jupyter:{{ .Chart.AppVersion }}cuda11"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu-python-tensorflow-desktop-jupyter:{{ .Chart.AppVersion }}cuda11"
         {{- else }}
-        image: "{{ include "chaimeleon.library-url" . }}/ubuntu_python_tensorflow_desktop_jupyter:{{ .Chart.AppVersion }}"
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu-python-tensorflow-desktop-jupyter:{{ .Chart.AppVersion }}"
         {{- end }}
         resources:
           requests:
