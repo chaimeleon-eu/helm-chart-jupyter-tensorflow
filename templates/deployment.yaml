@@ -55,8 +55,13 @@ spec:
                 name: "{{ include "jupyter-tensorflow.fullname" . }}"
                 key: container-password
 
+          # required by jobman
           - name: DATASETS_LIST
             value: "{{ .Values.datasets_list }}"
+
+          # required by delete-this-desktop 
+          - name: HELM_APP_NAME
+            value: "{{ .Release.Name }}"
 
           - name: SSH_ENABLE_PASSWORD_AUTH
             value: "true"
@@ -64,4 +69,3 @@ spec:
             value: "true"
           - name: TCP_FORWARDING
             value: "true"
-
