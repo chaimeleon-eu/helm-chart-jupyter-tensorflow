@@ -20,7 +20,21 @@ spec:
       containers:
       - name: {{ .Chart.Name }}
         imagePullPolicy: IfNotPresent
+        {{- if .Values.requests.gpu }}
+        image: "{{ include "chaimeleon.library-url" . }}/ubuntu-python-tensorflow-desktop-jupyter:{{ .Chart.AppVersion }}cuda11"
+        {{- else }}
         image: "{{ include "chaimeleon.library-url" . }}/ubuntu-python-tensorflow-desktop-jupyter:{{ .Chart.AppVersion }}"
+        {{- end }}
+        resources:
+          requests:
+            memory: "{{ .Values.requests.memory }}"
+            cpu: "{{ .Values.requests.cpu }}"
+        {{- if .Values.requests.gpu }}
+            nvidia.com/gpu: 1
+          limits:
+            nvidia.com/gpu: 1
+        {{- end }}
+        
         ports:
           - containerPort: 2222
             name: sshd

@@ -4,3 +4,11 @@
 
 datasets_list: ""
 
+requests: 
+  gpu: false
+  cpu: "1"
+  memory: "4Gi"
+
+configmaps:
+  chaimeleon: "chaimeleon"
+
