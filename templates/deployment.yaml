@@ -59,6 +59,18 @@ spec:
           - name: DATASETS_LIST
             value: "{{ .Values.datasets_list }}"
 
+          # required by upload-result
+          - name: EXTERNAL_SHARING_SERVICE_URL
+            valueFrom:
+              secretKeyRef:
+                name: "external-sharing-service-auth"
+                key: url
+          - name: EXTERNAL_SHARING_SERVICE_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "external-sharing-service-auth"
+                key: token
+
           # required by delete-this-desktop 
           - name: HELM_APP_NAME
             value: "{{ .Release.Name }}"
