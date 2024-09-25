@@ -44,6 +44,11 @@ spec:
           # required by jobman
           - name: DATASETS_LIST
             value: "{{ .Values.datasets_list }}"
+          - name: JOBMAN_SERVICE_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "jobman-service-auth"
+                key: token
 
           # required by upload-result
           - name: EXTERNAL_SHARING_SERVICE_URL
